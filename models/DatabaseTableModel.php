@@ -472,6 +472,14 @@ class DatabaseTableModel extends BaseModel
             $params['sslmode'] = $configArray['sslmode'];
         }
 
+        // Support search_path for pgsql (required for custom schemas)
+        if ($doctrineDriver === 'pdo_pgsql' && isset($configArray['search_path'])) {
+            $params['options'] = sprintf(
+                "-c search_path=%s",
+                $configArray['search_path']
+            );
+        }
+
         return DriverManager::getConnection($params, new Configuration);
     }
 
