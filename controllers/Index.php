@@ -1,5 +1,9 @@
 <?php namespace RainLab\Builder\Controllers;
 
+use Lang;
+use Flash;
+use System;
+use Backend;
 use Request;
 use Backend\Classes\Controller;
 use RainLab\Builder\Widgets\PluginList;
@@ -68,6 +72,11 @@ class Index extends Controller
      */
     public function beforeDisplay()
     {
+        if (System::checkSafeMode()) {
+            Flash::error(Lang::get('cms::lang.cms_object.safe_mode_enabled'));
+            return Backend::redirect('/');
+        }
+
         new PluginList($this, 'pluginList');
         new DatabaseTableList($this, 'databaseTableList');
         new ModelList($this, 'modelList');

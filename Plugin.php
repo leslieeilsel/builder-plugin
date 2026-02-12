@@ -3,6 +3,7 @@
 use Lang;
 use Event;
 use Backend;
+use System;
 use System\Classes\PluginBase;
 use RainLab\Builder\Classes\StandardControlsRegistry;
 use RainLab\Builder\Classes\StandardBehaviorsRegistry;
@@ -58,6 +59,10 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
+        if (System::checkSafeMode()) {
+            return [];
+        }
+
         return [
             'builder' => [
                 'label' => "Builder",
